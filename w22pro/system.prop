@@ -25,7 +25,7 @@ sys.fb.bits=32
 gps.enable=false
 # Enable player buildin
 media.amsuperplayer.enable=true
-media.amplayer.enable-acodecs=real,vc1,dts,vorbis,ac3,mpeg,mpeg4,h264,avc,asf,aac,m4a,ape,flac,alac
+media.amplayer.enable-acodecs=asf,aac,m4a,ape,flac,alac
 media.amplayer.enable=true
 media.amsuperplayer.m4aplayer=STAGEFRIGHT_PLAYER
 media.amsuperplayer.defplayer=PV_PLAYER
