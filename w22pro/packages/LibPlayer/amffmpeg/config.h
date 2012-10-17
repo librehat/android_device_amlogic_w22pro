@@ -47,11 +47,11 @@
 #define HAVE_MMI 0
 #define HAVE_MMX 0
 #define HAVE_MMX2 0
-#define HAVE_NEON 0
+#define HAVE_NEON 1
 #define HAVE_PPC4XX 0
 #define HAVE_SSE 0
 #define HAVE_SSSE3 0
-#define HAVE_VFPV3 0
+#define HAVE_VFPV3 1
 #define HAVE_VIS 0
 #define HAVE_BIGENDIAN 0
 #define HAVE_FAST_UNALIGNED 0

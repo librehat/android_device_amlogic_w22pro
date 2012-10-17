@@ -1,0 +1,53 @@
+--- libavformat/avio.c
++++ libavformat/avio.c
+@@ -83,6 +83,10 @@
+     return 0;
+ }
+ 
++int av_register_protocol(URLProtocol *protocol){
++	return ffurl_register_protocol(protocol,sizeof(*protocol));
++}
++
+ static int url_alloc_for_protocol (URLContext **puc, struct URLProtocol *up,
+                                    const char *filename, int flags)
+ {
+@@ -257,6 +261,23 @@
+     *puc = NULL;
+     return ret;
+ }
++int ffurl_open_h(URLContext **puc, const char *filename, int flags,const char *headers)
++{
++    int ret = ffurl_alloc(puc, filename, flags);
++    if (ret)
++        return ret;
++	if(headers){
++		(*puc)->headers=av_strdup(headers);
++	}
++    ret = ffurl_connect(*puc);
++    if (!ret)
++        return 0;
++    ffurl_close(*puc);
++    *puc = NULL;
++    return ret;
++}
++
++
+ 
+ static inline int retry_transfer_wrapper(URLContext *h, unsigned char *buf, int size, int size_min,
+                                          int (*transfer_func)(URLContext *h, unsigned char *buf, int size))
+@@ -277,6 +298,7 @@
+                 fast_retries--;
+             else
+                 usleep(1000);
++			av_log(NULL,AV_LOG_INFO,"read/write time out,retry=%d\n",fast_retries);
+         } else if (ret < 1)
+             return ret < 0 ? ret : len;
+         if (ret)
+@@ -335,6 +357,7 @@
+ #endif
+     if (h->prot->priv_data_size)
+         av_free(h->priv_data);
++	if(h->headers) av_free(h->headers);
+     av_free(h);
+     return ret;
+ }
