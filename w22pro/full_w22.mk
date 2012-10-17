@@ -71,9 +71,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/battery/3.bmp:system/resource/battery_pic/3.bmp \
     $(LOCAL_PATH)/proprietary/battery/4.bmp:system/resource/battery_pic/4.bmp \
     $(LOCAL_PATH)/proprietary/battery/power_low.bmp:system/resource/battery_pic/power_low.bmp \
-    $(LOCAL_PATH)/proprietary/vold/fsck.exfat:system/bin/fsck.exfat \
-    $(LOCAL_PATH)/proprietary/vold/mkfs.exfat:system/bin/mkfs.exfat \
-    $(LOCAL_PATH)/proprietary/vold/mount.exfat:system/bin/mount.exfat \
     $(LOCAL_PATH)/proprietary/vold/ntfs-3g:system/bin/ntfs-3g \
     $(LOCAL_PATH)/proprietary/vold/ntfs-3g.probe:system/bin/ntfs-3g.probe \
     $(LOCAL_PATH)/proprietary/vold/mkntfs:system/bin/mkntfs \
