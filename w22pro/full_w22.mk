@@ -192,9 +192,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dexopt-data-only=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.sys.timezone=Europe/Rome \
-    persist.sys.language=en \
-    persist.sys.country=US \
+    persist.sys.timezone=Asia/Shanghai \
+    persist.sys.language=zh \
+    persist.sys.country=CN \
     persist.sys.use_dithering=0 \
     persist.sys.purgeable_assets=0 \
     windowsmgr.max_events_per_sec=240 \
@@ -215,6 +215,6 @@ TARGET_BOOTANIMATION_NAME := horizontal-1024x768
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 
-$(call inherit-product, frameworks/base/build/tablet-dalvik-heap.mk)
+$(call inherit-product, frameworks/base/build/tablet-7in-hdpi-1024-dalvik-heap.mk)
 $(call inherit-product, build/target/product/full_base.mk)
 $(call inherit-product-if-exists, vendor/amlogic/w22pro/w22-vendor.mk)
