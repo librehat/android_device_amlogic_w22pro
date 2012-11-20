@@ -45,6 +45,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio_effects.conf:system/etc/audio_effects.conf \
     $(LOCAL_PATH)/configs/calibration.sh:system/bin/calibration.sh \
     $(LOCAL_PATH)/configs/ft5x06.idc:system/usr/idc/ft5x06.idc \
+    $(LOCAL_PATH)/configs/pixcir168.idc:/system/usr/idc/pixcir168.idc \
     $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml \
     $(LOCAL_PATH)/configs/remote.conf:system/etc/remote.conf \
     $(LOCAL_PATH)/configs/set_camera_clk.sh:system/bin/set_camera_clk.sh \
