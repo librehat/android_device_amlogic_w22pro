@@ -11,7 +11,6 @@ hw.nophone=false
 hw.novibrate=true
 hw.hasethernet=true
 hw.nodatausage=true
-hw.novibrate=false
 hw.cameras=2
 ro.platform.has.touch=true
 ro.platform.has.sleeppolicy=false
@@ -30,22 +29,29 @@ media.amplayer.enable=true
 media.amsuperplayer.m4aplayer=STAGEFRIGHT_PLAYER
 media.amsuperplayer.defplayer=PV_PLAYER
 media.amplayer.thumbnail=true
-
+media.amplayer.widevineenable=true
+media.amplayer.stopbuflevel=0.1
+media.libplayer.seek.fwdsearch=1
 gadget.nand.force_sync=true
-ro.statusbar.widget.power=true
-ro.statusbar.yearmonthdayweek=true
 ro.hdmi480p.enable=false
 rw.fb.need2xscale=ok
 media.amplayer.osd2xenable=true
 ro.camera.dcim=1
 ro.amlogic.no.preloadclass=1
 ro.app.optimization=true
-ro.has.cpu.setting=true
-ro.cpumode.maxfreq=1512000,1512000,1512000
+ro.has.cpu.setting=false
+ro.cpumode.maxfreq=1512000,1200000,800000
 ro.usbstorage.cpumode=performance
 ro.usbstorage.maxfreq=600000
 virtualsd.enable=true
 ro.vout.dualdisplay2=true
+ro.vout.dualdisplay3=false
 persist.sys.usb.config=mass_storage,adb
 #Change this to 0 if you want to hide the bar permanently
 ro.disable_permanent_hidebar=1
+
+# power hal
+ro.sys.min_cpu_on=408000
+ro.sys.min_cpu_off=96000
+ro.sys.max_cpu_on=1320000
+ro.sys.max_cpu_off=1008000

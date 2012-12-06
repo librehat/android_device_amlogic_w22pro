@@ -71,7 +71,17 @@ status_t AudioStreamOutALSA::setVolume(float left, float right)
 
 ssize_t AudioStreamOutALSA::write(const void *buffer, size_t bytes)
 {
-    AutoMutex lock(mLock);
+    Mutex::Autolock lock(mLock);
+    
+    if (mHandle->handle == NULL) {
+	mHandle->module->open(mHandle, mHandle->curDev, mHandle->curMode);
+    }
+    
+    if(mHandle->handle == NULL) {
+	ALOGE("write:: device open failed");
+	Mutex::Autolock unlock(mLock);
+	return 0;
+    }
 
     if (!mPowerLock) {
         acquire_wake_lock (PARTIAL_WAKE_LOCK, "AudioOutLock");
@@ -130,14 +140,14 @@ status_t AudioStreamOutALSA::dump(int fd, const Vector<String16>& args)
 
 status_t AudioStreamOutALSA::open(int mode)
 {
-    AutoMutex lock(mLock);
+    Mutex::Autolock lock(mLock);
 
     return ALSAStreamOps::open(mode);
 }
 
 status_t AudioStreamOutALSA::close()
 {
-    AutoMutex lock(mLock);
+    Mutex::Autolock lock(mLock);
 
     snd_pcm_drain (mHandle->handle);
     ALSAStreamOps::close();
@@ -152,7 +162,7 @@ status_t AudioStreamOutALSA::close()
 
 status_t AudioStreamOutALSA::standby()
 {
-    AutoMutex lock(mLock);
+    Mutex::Autolock lock(mLock);
 
     if (mHandle->module->standby)
     // allow hw specific modules to imlement unique standby
@@ -182,18 +192,18 @@ uint32_t AudioStreamOutALSA::latency() const
 	snd_pcm_status_alloca(&status);
 
     if(mHandle->handle == NULL) {
-        LOGV("handle is null, error !");
+        ALOGV("handle is null, error !");
         return 0;
     }
 	
 	if ((err = snd_pcm_status(mHandle->handle, status)) < 0) {
-	 LOGV("stream status error :%s\n", snd_strerror(err));
+	 ALOGV("stream status error :%s\n", snd_strerror(err));
         return USEC_TO_MSEC (mHandle->latency);
 	}
 
     t = snd_pcm_status_get_delay(status);
-    LOGV("snd_pcm_status_get_delay = %d", t);
-    LOGV("AudioStreamOutALSA::latency = %d, sampleRate = %d", 
+    ALOGV("snd_pcm_status_get_delay = %d", t);
+    ALOGV("AudioStreamOutALSA::latency = %d, sampleRate = %d", 
         (t * 1000) / sampleRate(),
         sampleRate());
     return (t * 1000) / sampleRate();

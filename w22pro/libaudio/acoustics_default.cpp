@@ -35,7 +35,7 @@ static hw_module_methods_t s_module_methods = {
     open            : s_device_open
 };
 
-extern "C" const hw_module_t HAL_MODULE_INFO_SYM = {
+extern "C" hw_module_t HAL_MODULE_INFO_SYM = {
     tag             : HARDWARE_MODULE_TAG,
     version_major   : 1,
     version_minor   : 0,
@@ -86,14 +86,14 @@ static status_t s_use_handle(acoustic_device_t *dev, alsa_handle_t *h)
 
 static status_t s_cleanup(acoustic_device_t *dev)
 {
-    LOGD("Acoustics close stub called.");
+    ALOGD("Acoustics close stub called.");
     return NO_ERROR;
 }
 
 static status_t s_set_params(acoustic_device_t *dev,
         AudioSystem::audio_in_acoustics acoustics, void *params)
 {
-    LOGD("Acoustics set_params stub called with %d.", (int)acoustics);
+    ALOGD("Acoustics set_params stub called with %d.", (int)acoustics);
     return NO_ERROR;
 }
 }

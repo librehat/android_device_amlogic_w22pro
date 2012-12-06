@@ -20,6 +20,8 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 
+import android.hardware.input.InputManager;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -123,14 +125,17 @@ public class HdmiBroadcastReceiver extends BroadcastReceiver {
         		
                 HdmiSwitch.setFb0Blank("1");
                 
-                /// send BACK key to stop other player
-                sendKeyEvent(KeyEvent.KEYCODE_HOME);                
+                if (SystemProperties.getBoolean("ro.vout.player.exit", true)) {
+                    /// send BACK key to stop other player
+                    sendKeyEvent(KeyEvent.KEYCODE_HOME);
+                }
                 
                 HdmiSwitch.setMode("720p");
                 Intent it = new Intent(WindowManagerPolicy.ACTION_HDMI_PLUGGED);
                 it.putExtra(WindowManagerPolicy.EXTRA_HDMI_PLUGGED_STATE, true);
                 context.sendStickyBroadcast(it);
-                if (SystemProperties.getBoolean("ro.vout.dualdisplay2", false)) {                        
+                if (SystemProperties.getBoolean("ro.vout.dualdisplay2", false)
+                    || SystemProperties.getBoolean("ro.vout.dualdisplay3", false)) {
                     int dualEnabled = Settings.System.getInt(context.getContentResolver(),
                                             Settings.System.HDMI_DUAL_DISP, 1);
                     HdmiSwitch.setDualDisplayStatic(true, (dualEnabled == 1));
@@ -144,27 +149,34 @@ public class HdmiBroadcastReceiver extends BroadcastReceiver {
          if (!SystemProperties.getBoolean("ro.vout.dualdisplay", false)) {
              if (!HdmiSwitch.getCurMode().equals("panel")) {
                 
+                HdmiSwitch.setVout2OffStatic();
+
                 /// 1. send broadcast to stop player
 //                Intent it = new Intent(WindowManagerPolicy.ACTION_HDMI_PLUGGED);
 //                it.putExtra(WindowManagerPolicy.EXTRA_HDMI_PLUGGED_STATE, false);
 //                context.sendStickyBroadcast(it);   
                 
-                /// 2. send BACK key to stop player
-                sendKeyEvent(KeyEvent.KEYCODE_HOME);
+                if (SystemProperties.getBoolean("ro.vout.player.exit", true)) {
+                    /// 2. send BACK key to stop player
+                    sendKeyEvent(KeyEvent.KEYCODE_HOME);
+                }
                 
                 /// 3. kill player
-           
-//                        HdmiSwitch.setMode("panel");
-//                        //Intent it = new Intent(WindowManagerPolicy.ACTION_HDMI_PLUGGED);
-//                        //it.putExtra(WindowManagerPolicy.EXTRA_HDMI_PLUGGED_STATE, false);
-//                        //context.sendStickyBroadcast(it);
-//                        if (SystemProperties.getBoolean("ro.vout.dualdisplay2", false)) {                        
-//                            int dualEnabled = Settings.System.getInt(context.getContentResolver(),
-//                                                    Settings.System.HDMI_DUAL_DISP, 1);
-//                            HdmiSwitch.setDualDisplayStatic(plugged, (dualEnabled == 1));
-//                        }       
-    			context.startService(new Intent(context, 
-    				HdmiDelayedService.class));                 
+                if (!SystemProperties.getBoolean("ro.vout.player.exit", true)) {
+                    HdmiSwitch.setMode("panel");
+                    Intent it = new Intent(WindowManagerPolicy.ACTION_HDMI_PLUGGED);
+                    it.putExtra(WindowManagerPolicy.EXTRA_HDMI_PLUGGED_STATE, false);
+                    context.sendStickyBroadcast(it);
+                    if (SystemProperties.getBoolean("ro.vout.dualdisplay2", false) ||
+                        SystemProperties.getBoolean("ro.vout.dualdisplay3", false)) {
+                        int dualEnabled = Settings.System.getInt(context.getContentResolver(),
+                                                Settings.System.HDMI_DUAL_DISP, 1);
+                        HdmiSwitch.setDualDisplayStatic(false, (dualEnabled == 1));
+                    }
+                } else {
+				context.startService(new Intent(context,
+					HdmiDelayedService.class));
+			}
              }
          }    
     }
@@ -178,7 +190,7 @@ public class HdmiBroadcastReceiver extends BroadcastReceiver {
     private void sendKeyEvent(int keyCode) {
         int eventCode = keyCode;
         long now = SystemClock.uptimeMillis();
-        try {
+        /*try {
             KeyEvent down = new KeyEvent(now, now, KeyEvent.ACTION_DOWN, eventCode, 0);
             KeyEvent up = new KeyEvent(now, now, KeyEvent.ACTION_UP, eventCode, 0);
             (IWindowManager.Stub
@@ -189,7 +201,12 @@ public class HdmiBroadcastReceiver extends BroadcastReceiver {
                 .injectInputEventNoWait(up);
         } catch (RemoteException e) {
             Log.i(TAG, "DeadOjbectException");
-        }
+        }*/
+	InputManager im = InputManager.getInstance();
+	KeyEvent down = new KeyEvent(now, now, KeyEvent.ACTION_DOWN, eventCode, 0);
+        KeyEvent up = new KeyEvent(now, now, KeyEvent.ACTION_UP, eventCode, 0);
+	im.injectInputEvent(down, InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
+	im.injectInputEvent(up, InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
     }
 
 }
