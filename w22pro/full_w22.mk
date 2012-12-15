@@ -24,9 +24,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/init:root/init \
     $(LOCAL_PATH)/ramdisk/ueventd.rc:root/ueventd.rc
 
-# Prebuilt boot animation
+# CM10 boot animation
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/bootanimation.zip:system/media/bootanimation.zip
+    vendor/cm/prebuilt/common/bootanimation/768.zip:system/media/bootanimation.zip
 
 # init.d scripts
 PRODUCT_COPY_FILES += \
