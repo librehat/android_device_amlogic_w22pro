@@ -82,7 +82,7 @@ TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 TARGET_BOARD_PLATFORM := meson6
 TARGET_BOOTLOADER_BOARD_NAME := w22ref
 TARGET_NO_BOOTLOADER := true
-TARGET_NO_KERNEL := true
+#TARGET_NO_KERNEL := true
 TARGET_NO_RADIOIMAGE := true
 TARGET_SIMULATOR := false
 TARGET_PROVIDES_INIT_RC := true
@@ -92,6 +92,7 @@ USE_OPENGL_RENDERER := true
 ENABLE_WEBGL := true
 BOARD_USE_SKIA_LCDTEXT := true
 
+# CWM
 TARGET_RECOVERY_INITRC := device/amlogic/w22pro/recovery.init.rc
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_UMS_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun0/file"
@@ -100,7 +101,7 @@ TARGET_BOOTANIMATION_PRELOAD := true
 
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/android0/f_mass_storage/lun%d/file"
 
-COMMON_GLOBAL_CFLAGS += -DSURFACEFLINGER_FORCE_SCREEN_RELEASE
+COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
 
 # TWRP
 #TARGET_RECOVERY_INITRC := device/amlogic/w22pro/recovery.init.rc
@@ -113,7 +114,6 @@ COMMON_GLOBAL_CFLAGS += -DSURFACEFLINGER_FORCE_SCREEN_RELEASE
 #TW_EXTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 #TW_NO_REBOOT_BOOTLOADER := true
 #TW_FLASH_FROM_STORAGE := true
-
 TARGET_PREBUILT_KERNEL := device/amlogic/w22pro/kernel
 BOARD_KERNEL_BASE := 0x40000000
 BOARD_KERNEL_CMDLINE := console=ttyS0,115200 rw init=/init loglevel=8

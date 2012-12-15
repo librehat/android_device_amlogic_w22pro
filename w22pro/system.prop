@@ -47,9 +47,6 @@ virtualsd.enable=true
 ro.vout.dualdisplay2=true
 ro.vout.dualdisplay3=false
 persist.sys.usb.config=mass_storage,adb
-#Change this to 0 if you want to hide the bar permanently
-ro.disable_permanent_hidebar=1
-
 # power hal
 ro.sys.min_cpu_on=408000
 ro.sys.min_cpu_off=96000
